@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 - KANGKAS 대시보드</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+        .login-left {
+            flex: 1;
+            background-color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-right {
+            flex: 1;
+            background-color: #000000;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            background: #FFFFFF;
+            padding: 30px;
+            border: 1px solid #000000;
+            border-radius: 10px;
+        }
+        .login-form h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            color: #000000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .login-form form div {
+            margin-bottom: 15px;
+        }
+        .login-form label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            color: #000000;
+            font-size: 14px;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .login-form .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .login-form button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .login-form .login-btn {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+        .login-form .register-btn {
+            background-color: #FFFFFF;
+            color: #000000;
+            border: 1px solid #000000;
+        }
+        .login-right h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .login-right p {
+            color: #A3A3A3;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-left">
+        <div class="login-form">
+            <h2>Sellier Marketing Dashboard</h2>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <form method="POST" action="{{ url_for('login') }}">
+                <div>
+                    <label>Username</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="login-btn">Login</button>
+                    <button type="button" class="register-btn" onclick="window.location.href='/register'">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="login-right">
+        <h1>Sellier Marketing Dashboard</h1>
+        <p>Marketing dashboards allow teams and management to strategize data-driven, maximize performance, and be agile in response to market changes.</p>
+    </div>
+</body>
+</html>

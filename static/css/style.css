@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+.sidebar {
+    width: 300px; /* 너비를 300px로 증가 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #000000;
+    padding-top: 20px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar .menu {
+    flex-grow: 1;
+}
+.sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #ffffff;
+}
+.sidebar a {
+    padding: 10px 20px; /* 패딩 증가로 텍스트와 여백 조정 */
+    text-decoration: none;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* 글자 크기 약간 증가 */
+    transition: background-color 0.3s;
+}
+.sidebar a i {
+    margin-right: 15px; /* 아이콘과 텍스트 간격 증가 */
+    font-size: 18px; /* 아이콘 크기 약간 증가 */
+}
+.sidebar a:hover {
+    background-color: #333333; /* 호버 시 강조 효과 */
+}
+.content {
+    margin-left: 300px; /* 사이드바 너비에 맞춰 여백 조정 */
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 0; /* 헤더가 없으므로 여백 제거 */
+}
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.logo {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.filters select, .filters input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.kpi-card {
+    background: #ecf0f1;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.kpi-card .value {
+    font-size: 24px;
+    color: #3498db;
+    margin: 5px 0;
+}
+.kpi-card .label {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+.source-table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+.source-table th, .source-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.source-table th {
+    background: #3498db;
+    color: white;
+}
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-top: 20px;
+}
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

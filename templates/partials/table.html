@@ -1,0 +1,20 @@
+<table class="source-table" id="sourceTable">
+    <tr>
+        <th>Source</th>
+        <th>Clicks</th>
+        <th>Cost</th>
+        <th>CPC</th>
+        <th>Impressions</th>
+        <th>ROAS</th>
+    </tr>
+    {% for source in sources|default([]) %}
+    <tr>
+        <td>{{ source.source|default('N/A') }}</td>
+        <td>{{ (source.clicks|default(0)) | round(0) }}</td>
+        <td>{{ (source.cost|default(0)) | round(2) }}</td>
+        <td>{{ (source.cpc|default(0)) | round(3) }}</td>
+        <td>{{ (source.impressions|default(0)) | round(0) }}</td>
+        <td>{{ (source.roas|default(0)) | round(3) }}</td>
+    </tr>
+    {% endfor %}
+</table>

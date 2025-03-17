@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}KANGKAS 대시보드{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="logo">KANGKAS</div>
+    <p>안녕하세요, {{ user_name }}님!</p>
+    {% include 'partials/filters.html' %}
+    {% include 'partials/kpis.html' %}
+    {% include 'partials/table.html' %}
+    <div class="chart-container">
+        <canvas id="revenueChart"></canvas>
+    </div>
+</div>
+{% endblock %}
