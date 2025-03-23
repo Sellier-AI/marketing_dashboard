@@ -5,7 +5,7 @@ body {
     padding: 0;
 }
 .sidebar {
-    width: 300px; /* 너비를 300px로 증가 */
+    width: 300px;
     position: fixed;
     top: 0;
     left: 0;
@@ -26,27 +26,27 @@ body {
     color: #ffffff;
 }
 .sidebar a {
-    padding: 10px 20px; /* 패딩 증가로 텍스트와 여백 조정 */
+    padding: 10px 20px;
     text-decoration: none;
     color: #ffffff;
     display: flex;
     align-items: center;
-    font-size: 16px; /* 글자 크기 약간 증가 */
+    font-size: 16px;
     transition: background-color 0.3s;
 }
 .sidebar a i {
-    margin-right: 15px; /* 아이콘과 텍스트 간격 증가 */
-    font-size: 18px; /* 아이콘 크기 약간 증가 */
+    margin-right: 15px;
+    font-size: 18px;
 }
 .sidebar a:hover {
-    background-color: #333333; /* 호버 시 강조 효과 */
+    background-color: #333333;
 }
 .content {
-    margin-left: 300px; /* 사이드바 너비에 맞춰 여백 조정 */
+    margin-left: 300px;
     padding: 20px;
     flex-grow: 1;
     overflow-y: auto;
-    margin-top: 0; /* 헤더가 없으므로 여백 제거 */
+    margin-top: 0;
 }
 .dashboard {
     max-width: 1200px;
@@ -74,10 +74,11 @@ body {
     border: 1px solid #ddd;
 }
 .kpi-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 .kpi-card {
     background: #ecf0f1;
@@ -85,9 +86,12 @@ body {
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    flex: 1;
+    min-width: 150px;
 }
 .kpi-card .value {
     font-size: 24px;
+    font-weight: bold;
     color: #3498db;
     margin: 5px 0;
 }
@@ -95,26 +99,43 @@ body {
     font-size: 14px;
     color: #7f8c8d;
 }
-.source-table {
-    width: 100%;
-    margin-bottom: 20px;
-    border-collapse: collapse;
-}
-.source-table th, .source-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-.source-table th {
-    background: #3498db;
-    color: white;
-}
 .chart-container {
     position: relative;
-    height: 300px;
+    height: 400px; // 차트 크기 증가
     margin-top: 20px;
+    width: 100%;
+    max-width: 800px; // 차트 크기 증가
+    margin-left: auto;
+    margin-right: auto;
 }
 canvas {
     width: 100% !important;
     height: 100% !important;
+}
+.donut-chart-section {
+    margin-top: 20px;
+    text-align: center;
+}
+.donut-chart-section h3 {
+    color: #2c3e50;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.metric-filter {
+    margin-bottom: 20px;
+}
+.metric-filter select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+.legend-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #2c3e50;
+    flex-wrap: wrap;
 }

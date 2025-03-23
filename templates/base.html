@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}KANGKAS 대시보드{% endblock %}</title>
+    <title>{% block title %}SELLIER 대시보드{% endblock %}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         body {
@@ -17,7 +17,7 @@
             overflow: hidden;
         }
         .sidebar {
-            width: 300px; /* 너비를 300px로 증가 */
+            width: 300px;
             position: fixed;
             top: 0;
             left: 0;
@@ -38,27 +38,27 @@
             color: #ffffff;
         }
         .sidebar a {
-            padding: 10px 20px; /* 패딩 증가로 텍스트와 여백 조정 */
+            padding: 10px 20px;
             text-decoration: none;
             color: #ffffff;
             display: flex;
             align-items: center;
-            font-size: 16px; /* 글자 크기 약간 증가 */
+            font-size: 16px;
             transition: background-color 0.3s;
         }
         .sidebar a i {
-            margin-right: 15px; /* 아이콘과 텍스트 간격 증가 */
-            font-size: 18px; /* 아이콘 크기 약간 증가 */
+            margin-right: 15px;
+            font-size: 18px;
         }
         .sidebar a:hover {
-            background-color: #333333; /* 호버 시 강조 효과 */
+            background-color: #333333;
         }
         .content {
-            margin-left: 300px; /* 사이드바 너비에 맞춰 여백 조정 */
+            margin-left: 300px;
             padding: 20px;
             flex-grow: 1;
             overflow-y: auto;
-            margin-top: 0; /* 헤더가 없으므로 여백 제거 */
+            margin-top: 0;
         }
     </style>
 </head>

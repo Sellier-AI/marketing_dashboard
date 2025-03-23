@@ -1,14 +1,395 @@
 {% extends "base.html" %}
-{% block title %}KANGKAS 대시보드{% endblock %}
+{% block title %}SELLIER 대시보드{% endblock %}
 {% block content %}
 <div class="dashboard">
-    <div class="logo">KANGKAS</div>
+    <div class="logo">SELLIER</div>
     <p>안녕하세요, {{ user_name }}님!</p>
     {% include 'partials/filters.html' %}
-    {% include 'partials/kpis.html' %}
-    {% include 'partials/table.html' %}
-    <div class="chart-container">
-        <canvas id="revenueChart"></canvas>
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="label">Clicks</div>
+            <div class="value" id="kpiClicks">{{ kpis.clicks | default(0) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Cost</div>
+            <div class="value" id="kpiCost">{{ kpis.cost | default(0) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">CPC</div>
+            <div class="value" id="kpiCpc">{{ kpis.cpc | default(0) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Impressions</div>
+            <div class="value" id="kpiImpressions">{{ kpis.impressions | default(0) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">ROAS</div>
+            <div class="value" id="kpiRoas">{{ kpis.roas | default(0) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Revenue</div>
+            <div class="value" id="kpiRevenue">{{ kpis.revenue | default(0) }}</div>
+        </div>
+    </div>
+    <!-- 도넛 차트와 소스별 성과 비교 섹션 -->
+    <div class="charts-container">
+        <!-- 도넛 차트 섹션 -->
+        <div class="donut-chart-section">
+            <h3>소스별 비중</h3>
+            <div class="metric-filter">
+                <label for="metricFilter">값 선택:</label>
+                <div class="select-wrapper">
+                    <select id="metricFilter" onchange="updateDonutChart()">
+                        <option value="clicks">Clicks</option>
+                        <option value="cost">Cost</option>
+                        <option value="cpc">CPC</option>
+                        <option value="impressions">Impressions</option>
+                        <option value="roas">ROAS</option>
+                        <option value="revenue">Revenue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="donutChart"></canvas>
+            </div>
+            <div class="legend-container" id="legendContainer"></div>
+        </div>
+        <!-- 소스별 성과 비교 섹션 -->
+        <div class="source-comparison-section">
+            <h3>소스별 성과 비교</h3>
+            <div class="comparison-filters">
+                <div class="metric-filter">
+                    <label>소스 선택:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-toggle">소스 선택</div>
+                        <div class="dropdown-menu">
+                            <input type="checkbox" id="sourceCriteo" name="source" value="Criteo" checked onchange="updateBarChart()">
+                            <label for="sourceCriteo">Criteo</label>
+                            <input type="checkbox" id="sourceNaver" name="source" value="Naver" checked onchange="updateBarChart()">
+                            <label for="sourceNaver">Naver</label>
+                            <input type="checkbox" id="sourceGoogle" name="source" value="Google" onchange="updateBarChart()">
+                            <label for="sourceGoogle">Google</label>
+                            <input type="checkbox" id="sourceTikTok" name="source" value="TikTok" onchange="updateBarChart()">
+                            <label for="sourceTikTok">TikTok</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-filter">
+                    <label>값 선택:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-toggle">값 선택</div>
+                        <div class="dropdown-menu">
+                            <input type="checkbox" id="valueCtr" name="value" value="ctr" checked onchange="updateBarChart()">
+                            <label for="valueCtr">CTR</label>
+                            <input type="checkbox" id="valueCpc" name="value" value="cpc" checked onchange="updateBarChart()">
+                            <label for="valueCpc">CPC</label>
+                            <input type="checkbox" id="valueRoas" name="value" value="roas" checked onchange="updateBarChart()">
+                            <label for="valueRoas">ROAS</label>
+                            <input type="checkbox" id="valueCost" name="value" value="cost" onchange="updateBarChart()">
+                            <label for="valueCost">Cost</label>
+                            <input type="checkbox" id="valueClicks" name="value" value="clicks" onchange="updateBarChart()">
+                            <label for="valueClicks">Clicks</label>
+                            <input type="checkbox" id="valueImpressions" name="value" value="impressions" onchange="updateBarChart()">
+                            <label for="valueImpressions">Impressions</label>
+                            <input type="checkbox" id="valueRevenue" name="value" value="revenue" onchange="updateBarChart()">
+                            <label for="valueRevenue">Revenue</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- 시간별 트렌드 섹션 -->
+    <div class="time-trend-section">
+        <h3>시간별 트렌드</h3>
+        <div class="metric-filter">
+            <label for="timeTrendFilter">값 선택:</label>
+            <div class="select-wrapper">
+                <select id="timeTrendFilter" onchange="updateTimeTrendChart()">
+                    <option value="clicks">Clicks</option>
+                    <option value="impressions">Impressions</option>
+                    <option value="roas">ROAS</option>
+                    <option value="revenue">Revenue</option>
+                    <option value="cpc">CPC</option>
+                    <option value="cost">Cost</option>
+                </select>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="timeTrendChart"></canvas>
+        </div>
     </div>
 </div>
+<style>
+    .donut-chart-section {
+        margin-top: 20px;
+        text-align: center;
+        flex: 1;
+        padding: 15px;
+    }
+    .donut-chart-section h3 {
+        color: #2c3e50;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .metric-filter {
+        margin-bottom: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .metric-filter label {
+        margin-right: 8px;
+        font-size: 14px;
+        color: #2c3e50;
+    }
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    .metric-filter select {
+        padding: 8px 24px 8px 12px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        width: 150px;
+        height: 40px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+    .metric-filter select:hover {
+        background-color: #f0f0f0;
+        border-color: #3498db;
+    }
+    .metric-filter select:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+    .select-wrapper::after {
+        content: '\25BC';
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #2c3e50;
+        font-size: 12px;
+    }
+    .custom-dropdown {
+        position: relative;
+        display: inline-block;
+        width: 150px;
+    }
+    .dropdown-toggle {
+        padding: 8px 12px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .dropdown-toggle:hover {
+        background-color: #f0f0f0;
+        border-color: #3498db;
+    }
+    .dropdown-toggle::after {
+        content: '\25BC';
+        font-size: 12px;
+        color: #2c3e50;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .dropdown-menu.active {
+        display: block;
+    }
+    .dropdown-menu label {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #2c3e50;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .dropdown-menu label:hover {
+        background-color: #e6f0fa;
+    }
+    .dropdown-menu label.selected {
+        background-color: #d1e7ff;
+        color: #2c3e50;
+    }
+    .dropdown-menu::-webkit-scrollbar {
+        width: 8px;
+    }
+    .dropdown-menu::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 5px;
+    }
+    .dropdown-menu::-webkit-scrollbar-thumb {
+        background: #3498db;
+        border-radius: 5px;
+    }
+    .dropdown-menu::-webkit-scrollbar-thumb:hover {
+        background: #2a7bc2;
+    }
+    .dropdown-menu input[type="checkbox"] {
+        display: none;
+    }
+    .dropdown-menu label::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        margin-right: 8px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+        opacity: 1;
+    }
+    .dropdown-menu input[type="checkbox"]:checked + label::before {
+        content: '\2713';
+        color: #fff;
+        background-color: #3498db;
+        border-color: #3498db;
+        text-align: center;
+        line-height: 16px;
+        font-size: 12px;
+        opacity: 0;
+        animation: fadeInCheck 0.3s ease forwards;
+    }
+    .dropdown-menu input[type="checkbox"]:not(:checked) + label::before {
+        animation: fadeOutCheck 0.3s ease forwards;
+    }
+    @keyframes fadeInCheck {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeOutCheck {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 1; transform: scale(0.8); }
+    }
+    .chart-container {
+        position: relative;
+        height: 280px;
+        width: 100%;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .legend-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #2c3e50;
+        flex-wrap: wrap;
+    }
+    .charts-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+    .source-comparison-section {
+        margin-top: 20px;
+        text-align: center;
+        flex: 1;
+        padding: 15px;
+    }
+    .source-comparison-section h3 {
+        color: #2c3e50;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .comparison-filters {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+    .time-trend-section {
+        margin-top: 20px;
+        text-align: center;
+        padding: 15px;
+    }
+    .time-trend-section h3 {
+        color: #2c3e50;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .time-trend-section .chart-container {
+        max-width: 800px; /* 더 넓은 차트로 설정 */
+        height: 300px;
+    }
+</style>
+<!-- Chart.js Datalabels 플러그인 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script>
+// 커스텀 드롭다운 토글 기능
+document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+    const toggle = dropdown.querySelector('.dropdown-toggle');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    toggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+    });
+
+    // 드롭다운 외부 클릭 시 닫기
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            menu.classList.remove('active');
+        }
+    });
+
+    // 체크박스 선택 상태에 따라 스타일 업데이트
+    const checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const label = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                label.classList.add('selected');
+            } else {
+                label.classList.remove('selected');
+            }
+        });
+
+        // 초기 상태 설정
+        const label = checkbox.nextElementSibling;
+        if (checkbox.checked) {
+            label.classList.add('selected');
+        }
+    });
+});
+</script>
 {% endblock %}
